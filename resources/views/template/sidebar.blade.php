@@ -1,7 +1,7 @@
 <div class="main-sidebar sidebar-style-2" tabindex="1" style="overflow: hidden; outline: none;">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="index.html">Aldmic</a>
+            <a href="index.html">Habibie Bayezid Wildan</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="{{ url('/') }}">Ac</a>

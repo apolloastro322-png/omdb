@@ -54,8 +54,8 @@
                                         Login
                                     </a>
                                     {{-- <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
-                                            Login
-                                        </button> --}}
+                                        Login
+                                    </button> --}}
                                 </div>
                             </form>
                             {{-- <div class="text-center mt-4 mb-3">
