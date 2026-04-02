@@ -1,4 +1,5 @@
 @extends('template.master')
+@section('title', 'Login')
 @section('main-content')
     <section class="section">
         <div class="container mt-5">

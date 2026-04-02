@@ -1,4 +1,5 @@
 @extends('template.master')
+@section('title', 'My Favorites')
 @section('main-content')
     <!-- Main Content -->
     <div class="main-content">
