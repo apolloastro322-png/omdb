@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>@yield('title', 'Ecommerce Dashboard') &mdash; Stisla</title>
+    <title>@yield('title', 'Ecommerce Dashboard') &mdash; OMDB</title>
 
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/modules/bootstrap/css/bootstrap.min.css') }}">
@@ -70,7 +70,33 @@
 
     <!-- Page Specific JS File -->
     <script src="assets/js/page/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    @if (@session()->has('success'))
+        <script>
+            Swal.fire({
+                text: "{{ session()->get('success') }}",
+                icon: "success",
+                toast: true,
+                position: 'top-end',
+                showComfirmButton: false,
+                timer: 3000
+            })
+        </script>
+    @endif
+
+    @if (@session()->has('error'))
+        <script>
+            Swal.fire({
+                text: "{{ session()->get('error') }}",
+                icon: "error",
+                toast: true,
+                position: 'top-end',
+                showComfirmButton: false,
+                timer: 3000
+            })
+        </script>
+    @endif
     <!-- Template JS File -->
     <script src="assets/js/scripts.js"></script>
     <script src="assets/js/custom.js"></script>
