@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PanelControl\DashboardController;
+use App\Http\Controllers\PanelControl\MovieController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
@@ -21,9 +22,8 @@ Route::post('/register', [AuthController::class, 'register_process'])->name('sig
 Route::post('/login', [AuthController::class, 'login'])->name('signin');
 Route::get('/logout', [AuthController::class, 'logout'])->name('signout');
 
-Route::get('/movies', function () {
-    return view('movies');
-});
+Route::get('/movies', [MovieController::class, 'index'])->name('movies');
+Route::get('/movies/{imdbID}', [MovieController::class, 'detail'])->name('movies.detail');
 
 Route::get('/favorites', function () {
     return view('favorites');

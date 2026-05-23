@@ -62,7 +62,8 @@
                                         {{ __('Full Name') }}
                                     </label>
 
-                                    <input id="full_name" type="text" class="form-control" name="name" autofocus>
+                                    <input id="name" type="text" class="form-control" name="name" autofocus
+                                        value="{{ old('name') }}">
 
                                     @error('name')
                                         <span class="text-danger text-sm">
@@ -78,7 +79,8 @@
                                         {{ __('Email') }}
                                     </label>
 
-                                    <input id="email" type="email" class="form-control" name="email">
+                                    <input id="email" type="email" class="form-control" name="email"
+                                        value="{{ old('email') }}">
 
                                     @error('email')
                                         <span class="text-danger text-sm">

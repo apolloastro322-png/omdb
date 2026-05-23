@@ -1,0 +1,77 @@
+<?php
+
+namespace App\Http\Controllers\PanelControl;
+
+use App\Http\Controllers\Controller;
+use App\Services\MovieService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
+class MovieController extends Controller
+{
+    protected $movieService;
+
+    public function __construct(MovieService $movieService)
+    {
+        $this->movieService = $movieService;
+    }
+
+    public function index(Request $request)
+    {
+        try {
+            $query = $request->get('q', '');
+            $page = $request->get('page', '');
+
+            if (empty($query)) {
+                if ($request->ajax()) {
+                    return response()->json([
+                        'movies' => [],
+                        'total' => 0,
+                        'error' => null
+                    ]);
+                }
+            }
+
+            $result = $this->movieService->search($query, $page);
+
+            if ($request->ajax()) {
+                return response()->json($result);
+            }
+
+            return view('movies', [
+                'movies' => $result['movies'],
+                'error' => $result['error']
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            Log::error("Failted register user", [
+                'line' => $th->getLine(),
+                'file' => $th->getFile(),
+                'message' => $th->getMessage()
+            ]);
+
+            return redirect()->back()->with('error');
+        }
+    }
+
+    public function detail(Request $request, $imdbID)
+    {
+        try {
+            $result = $this->movieService->detail($imdbID);
+
+            return view('movie_detail', [
+                'movie' => $result['movie'],
+                'error' => $result['error']
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            Log::error("Failted register user", [
+                'line' => $th->getLine(),
+                'file' => $th->getFile(),
+                'message' => $th->getMessage()
+            ]);
+
+            return redirect()->back()->with('error');
+        }
+    }
+}

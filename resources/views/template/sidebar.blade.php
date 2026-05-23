@@ -27,7 +27,7 @@
                 <ul class="dropdown-menu">
 
                     <li>
-                        <a class="nav-link" href="{{ url('movies') }}">
+                        <a class="nav-link" href="{{ route('movies') }}">
                             {{ __('Search Movies') }}
                         </a>
                     </li>

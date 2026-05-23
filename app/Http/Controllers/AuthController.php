@@ -33,29 +33,24 @@ class AuthController extends Controller
         $validated = $request->validate([
             'email' => ['required', 'email', 'exists:users'],
             'password' => ['required']
-        ], [
-            'email.required' => 'Email wajib diisi',
-            'email.email' => 'Email tidak valid',
-            'email.exists' => 'Email tidak terdaftar',
-            'password.required' => 'Password wajib diisi'
         ]);
 
         try {
             $response = $this->authService->login($validated);
 
             if (!$response) {
-                return redirect()->back()->with('error', 'Registrasi gagal');
+                return redirect()->back()->with('error', __('Login failed!'));
             }
 
-            return redirect()->route('dashboard')->with('success', 'Registrasi berhasil');
+            return redirect()->route('movies')->with('success', __('Login successful!'));
         } catch (\Throwable $th) {
-            Log::error("Failted register user", [
+            Log::error("Failted login user", [
                 'line' => $th->getLine(),
                 'file' => $th->getFile(),
                 'message' => $th->getMessage()
             ]);
 
-            return redirect()->back()->with('error', 'Kredential salah');
+            return redirect()->back()->with('error', __('Invalid credentials!'));
         }
     }
 
@@ -75,31 +70,16 @@ class AuthController extends Controller
                     ->symbols()
                     ->uncompromised()
             ]
-        ], [
-            'name.required' => 'Nama wajib diisi.',
-
-            'email.required' => 'Email wajib diisi.',
-            'email.email' => 'Email tidak valid.',
-            'email.unique' => 'Email sudah terdaftar.',
-
-            'password.required' => 'Password wajib diisi.',
-            'password.confirmed' => 'Konfirmasi password tidak cocok.',
-
-            'password.min' => 'Password minimal 8 karakter.',
-            'password.letters' => 'Password harus mengandung huruf.',
-            'password.mixed' => 'Password harus mengandung huruf besar dan kecil.',
-            'password.numbers' => 'Password harus mengandung angka.',
-            'password.symbols' => 'Password harus mengandung simbol.',
-            'password.uncompromised' => 'Password terlalu lemah atau pernah bocor, gunakan password lain.',
         ]);
+
         try {
             $response = $this->authService->register($validated);
 
             if (!$response) {
-                return redirect()->back()->with('error', 'Registrasi gagal');
+                return redirect()->back()->with('error', __('Registration failed!'));
             }
 
-            return redirect()->route('login')->with('success', 'Login berhasil');
+            return redirect()->route('login')->with('success', __('Registration successful!'));
         } catch (\Throwable $th) {
             Log::error("Failted register user", [
                 'line' => $th->getLine(),
@@ -107,7 +87,7 @@ class AuthController extends Controller
                 'message' => $th->getMessage()
             ]);
 
-            return redirect()->back()->with('error', 'Registrasi gagal');
+            return redirect()->back()->with('error', __('Registration failed!'));
         }
     }
 
@@ -116,15 +96,15 @@ class AuthController extends Controller
         try {
             session()->flush();
 
-            return redirect()->route('login')->with('success', 'Anda telah keluar');
+            return redirect()->route('login')->with('success', __('You have been logged out!'));
         } catch (\Throwable $th) {
             //throw $th;
-            Log::error("Failted register user", [
+            Log::error("Failted logout user", [
                 'line' => $th->getLine(),
                 'file' => $th->getFile(),
                 'message' => $th->getMessage()
             ]);
-            return redirect()->back()->with('error', 'Terjadi keselahan');
+            return redirect()->back()->with('error', __('Something went wrong!'));
         }
     }
 }

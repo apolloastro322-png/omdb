@@ -59,7 +59,7 @@
                                     </label>
 
                                     <input id="email" type="email" class="form-control" name="email" tabindex="1"
-                                        autofocus>
+                                        autofocus value="{{ old('email') }}">
 
                                     @error('email')
                                         <span class="text-danger text-sm">
@@ -77,7 +77,7 @@
                                     </div>
 
                                     <input id="password" type="password" class="form-control" name="password"
-                                        tabindex="2">
+                                        tabindex="2" value="{{ old('password') }}">
 
                                     @error('password')
                                         <span class="text-danger text-sm">
