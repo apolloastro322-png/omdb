@@ -1,7 +1,8 @@
 @extends('template.master')
-@section('title', $movie['Title'])
+@section('title', $movie['Title'] ?? 'Movie')
 @section('main-content')
     <!-- Main Content -->
+    {{-- @dd($isFavorite) --}}
     <div class="main-content">
         <section class="section">
             <div class="section-header">
@@ -26,7 +27,11 @@
                             <div class="card">
                                 <div class="card-body">
                                     <img src="{{ $movie['Poster'] }}" alt="{{ $movie['Title'] }}" class="img-fluid rounded"
-                                        loading="lazy">
+                                        loading="lazy"
+                                        onerror="
+            this.onerror=null;
+            this.src='/assets/img/no-image.jpg';
+        ">
                                 </div>
                             </div>
                         </div>
@@ -40,11 +45,22 @@
                                                 {{ $movie['Year'] }} • {{ $movie['Runtime'] }} • {{ $movie['Genre'] }}
                                             </p>
                                         </div>
-                                        {{-- <button type="button" class="btn btn-outline-danger favorite-btn"
-                                            data-imdb="{{ $movie['imdbID'] }}" id="favorite-btn-{{ $movie['imdbID'] }}">
-                                            <i class="far fa-heart"></i>
-                                            <span>Add to Favorites</span>
-                                        </button> --}}
+                                        @if ($isFavorite)
+                                            <button type="button" class="btn favorite-btn btn-danger"
+                                                data-imdb="{{ $movie['imdbID'] }}"
+                                                id="favorite-btn-{{ $movie['imdbID'] }}">
+                                                <i class="fa-heart fas"></i>
+                                                <span>{{ __('Remove from Favorites') }}</span>
+                                            </button>
+                                        @else
+                                            <button type="button" class="btn btn-outline-danger favorite-btn"
+                                                data-imdb="{{ $movie['imdbID'] }}"
+                                                id="favorite-btn-{{ $movie['imdbID'] }}">
+                                                <i class="far fa-heart"></i>
+                                                <span>{{ __('Add to Favorites') }}</span>
+                                            </button>
+                                        @endif
+
                                     </div>
 
                                     <div class="mb-4">
@@ -106,3 +122,96 @@
         </section>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        const translations = {
+            addFavorite: "{{ __('Add to Favorites') }}",
+            removeFavorite: "{{ __('Remove from Favorites') }}",
+            movieRemovedFromFavorites: "{{ __('Movie removed from favorites') }}",
+            movieAddedToFavorites: "{{ __('Movie added to favorites') }}"
+        };
+
+        function getCsrfToken() {
+            return $('meta[name="csrf-token"]').attr('content') || '';
+        }
+
+        let isFavorite = @json($isFavorite);
+        const imdbId = @json($movie['imdbID']);
+
+        function updateFavoriteButton() {
+            const $btn = $('#favorite-btn-' + imdbId);
+            if (isFavorite) {
+                $btn.removeClass('btn-outline-danger').addClass('btn-danger');
+                $btn.find('i').removeClass('far').addClass('fas');
+                $btn.find('span').text(translations.removeFavorite);
+            } else {
+                $btn.removeClass('btn-danger').addClass('btn-outline-danger');
+                $btn.find('i').removeClass('fas').addClass('far');
+                $btn.find('span').text(translations.addFavorite);
+            }
+        }
+
+        $(document).ready(function() {
+            $('#favorite-btn-' + imdbId).on('click', function() {
+                if (isFavorite) {
+                    $.ajax({
+                        url: `/favorites/${imdbId}`,
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': getCsrfToken(),
+                            'Accept': 'application/json'
+                        },
+                        success: function(data) {
+                            if (data.success) {
+                                isFavorite = false;
+                                updateFavoriteButton();
+                                Swal.fire({
+                                    icon: 'success',
+                                    text: translations.movieRemovedFromFavorites,
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                });
+                            }
+                        },
+                        error: function(err) {
+                            console.error('Error removing favorite:', err);
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: '/favorites/add',
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': getCsrfToken(),
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        data: JSON.stringify({
+                            imdb_id: imdbId
+                        }),
+                        success: function(data) {
+                            if (data.success) {
+                                isFavorite = true;
+                                updateFavoriteButton();
+                                Swal.fire({
+                                    icon: 'success',
+                                    text: translations.movieAddedToFavorites,
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                });
+                            }
+                        },
+                        error: function(err) {
+                            console.error('Error adding favorite:', err);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+@endpush

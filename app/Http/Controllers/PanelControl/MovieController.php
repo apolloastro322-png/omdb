@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\PanelControl;
 
 use App\Http\Controllers\Controller;
+use App\Models\Favorite;
 use App\Services\MovieService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class MovieController extends Controller
@@ -40,7 +42,8 @@ class MovieController extends Controller
 
             return view('movies', [
                 'movies' => $result['movies'],
-                'error' => $result['error']
+                'error' => $result['error'],
+                'favorites' => auth()->user()->favorites->pluck('imdb_id')->toArray()
             ]);
         } catch (\Throwable $th) {
             //throw $th;
@@ -58,10 +61,12 @@ class MovieController extends Controller
     {
         try {
             $result = $this->movieService->detail($imdbID);
-
+            $isFavorite = Favorite::where('user_id', Auth::id())
+                ->where('imdb_id', $imdbID)->exists();
             return view('movie_detail', [
                 'movie' => $result['movie'],
-                'error' => $result['error']
+                'error' => $result['error'],
+                'isFavorite' => $isFavorite
             ]);
         } catch (\Throwable $th) {
             //throw $th;

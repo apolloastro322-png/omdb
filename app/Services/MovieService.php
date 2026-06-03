@@ -2,12 +2,14 @@
 
 namespace App\Services;
 
+use App\Models\Favorite;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Facades\Auth;
 
 class MovieService
 {
@@ -99,5 +101,34 @@ class MovieService
                 'error' => 'Failed to connect to movie service.',
             ];
         }
+    }
+
+    public function getUserFavorites(): array
+    {
+        $imdbIds = Favorite::where('user_id', Auth::id())
+            ->pluck('imdb_id')
+            ->toArray();
+
+        if (empty($imdbIds)) {
+            return [];
+        }
+
+        $movies = [];
+
+        foreach ($imdbIds as $imdbId) {
+            $result = $this->detail($imdbId);
+
+            if ($result['error'] || !$result['movie']) {
+                Log::warning('Failed to fetch favorite movie detail', [
+                    'imdb_id' => $imdbId,
+                    'error'   => $result['error'],
+                ]);
+                continue;
+            }
+
+            $movies[] = $result['movie'];
+        }
+
+        return $movies;
     }
 }

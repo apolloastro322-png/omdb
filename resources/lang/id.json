@@ -20,6 +20,7 @@
     "Movies": "Film",
     "Dashboard": "Dasbor",
     "All Movies": "Semua Film",
+    "Browse Movies": "Cari Film",
     "Search movies...": "Cari film...",
     "Poster": "Poster",
     "Title": "Judul",
@@ -38,8 +39,8 @@
     "Start adding movies to your favorites list!": "Mulai tambahkan film ke daftar favorit Anda!",
     "Search Movies": "Cari Film",
     "Movie not found!": "Film tidak ditemukan!",
-
     "Movie Detail": "Detail Film",
+
     "Plot": "Sinopsis",
     "Director": "Sutradara",
     "Writer": "Penulis",
@@ -48,6 +49,15 @@
     "Country": "Negara",
     "Box Office": "Box Office",
     "Back to Movies": "Kembali ke Film",
+    "Add to Favorites": "Tambahkan ke Favorit",
+    "Remove from Favorites": "Hapus dari Favorit",
+    "Movie added to favorites": "Film ditambahkan ke favorit",
+    "Movie removed from favorites": "Film dihapus dari favorit",
+    "Remove from Favorites?": "Hapus dari Favorit?",
+    "Are you sure you want to remove this movie from your favorites?": "Apakah Anda yakin ingin menghapus film ini dari favorit?",
+    "Yes, Remove it!": "Ya, Hapus!",
+    "Cancel": "Batal",
+    "Remove": "Hapus",
 
     "Pages": "Halaman",
     "Guest": "Tamu",
