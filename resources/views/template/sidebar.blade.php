@@ -26,13 +26,13 @@
 
                 <ul class="dropdown-menu">
 
-                    <li>
+                    <li class="{{ Route::is('movies*') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('movies') }}">
                             {{ __('Search Movies') }}
                         </a>
                     </li>
 
-                    <li>
+                    <li class="{{ Route::is('favorites*') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ url('favorites') }}">
                             {{ __('My Favorites') }}
                         </a>

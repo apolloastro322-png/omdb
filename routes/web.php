@@ -27,8 +27,8 @@ Route::get('/movies', [MovieController::class, 'index'])->name('movies');
 Route::get('/movies/{imdbID}', [MovieController::class, 'detail'])->name('movies.detail');
 
 Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites');
-// Route::get('/favorites/list',        [FavoriteController::class, 'list']);
-// Route::post('/favorites/add',        [FavoriteController::class, 'add']);
+Route::get('/favorites/list',        [FavoriteController::class, 'list']);
+Route::post('/favorites/add',        [FavoriteController::class, 'add']);
 Route::delete('/favorites/{imdbId}', [FavoriteController::class, 'destroy']);
 
 Route::get('/movies2', function () {

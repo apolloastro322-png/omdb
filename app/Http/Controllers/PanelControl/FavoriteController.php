@@ -39,25 +39,23 @@ class FavoriteController extends Controller
     //     ]);
     // }
 
-    // // POST /favorites/add
-    // public function add(Request $request)
-    // {
-    //     $request->validate([
-    //         'imdb_id' => 'required|string',
-    //     ]);
+    public function add(Request $request)
+    {
+        $request->validate([
+            'imdb_id' => 'required|string',
+        ]);
 
-    //     Favorite::firstOrCreate([
-    //         'user_id' => Auth::id(),
-    //         'imdb_id' => $request->imdb_id,
-    //     ]);
+        Favorite::firstOrCreate([
+            'user_id' => Auth::id(),
+            'imdb_id' => $request->imdb_id,
+        ]);
 
-    //     return response()->json([
-    //         'success' => true,
-    //         'message' => 'Movie added to favorites',
-    //     ]);
-    // }
+        return response()->json([
+            'success' => true,
+            'message' => 'Movie added to favorites',
+        ]);
+    }
 
-    // DELETE /favorites/{imdbId}
     public function destroy($imdbId)
     {
         Favorite::where('user_id', Auth::id())
